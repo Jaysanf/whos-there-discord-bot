@@ -40,7 +40,7 @@ class WhosThereBot {
         const userId = record.userId;
         const user = await this.client.users.fetch(userId);
 
-        //if (userId === after.member?.id.toString()) continue;
+        if (userId === after.member?.id.toString()) continue;
 
         const dmChannel = await user.createDM();
 

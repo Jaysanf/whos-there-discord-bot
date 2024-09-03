@@ -163,11 +163,21 @@ export class DiscordCommandStack extends Stack {
       `#!/bin/bash`,
       `sudo yum update -y`,
       `sudo yum install -y git nodejs npm`,
-      `export DISCORD_BOT_TOKEN=${process.env.DISCORD_BOT_TOKEN}`,
-      `export AWS_REGION=us-east-1`,
+      // Export environment variables and add them to .bashrc for persistence
+      `echo "export DISCORD_BOT_TOKEN=${process.env.DISCORD_BOT_TOKEN}" | sudo tee -a /home/ec2-user/.bashrc`,
+      `echo "export AWS_REGION=us-east-1" | sudo tee -a /home/ec2-user/.bashrc`,
+
+      // Reload the .bashrc to apply the environment variables immediately
+      `source /home/ec2-user/.bashrc`,
+
+      // Output the variables to confirm they are set
+      'echo $DISCORD_BOT_TOKEN',
+      'echo $AWS_REGION',
+
       `git clone https://github.com/Jaysanf/whos-there-discord-bot.git /home/ec2-user/whos-there-discord-bot`,
       'cd /home/ec2-user/whos-there-discord-bot',
       'echo "DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}" | sudo tee .env > /dev/null',
+      'cat .env',
       `sudo npm install`,
       `sudo npm run deploy:discordLoop`
     );
