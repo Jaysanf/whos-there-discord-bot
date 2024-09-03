@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
@@ -113,7 +115,7 @@ export class DiscordCommandStack extends Stack {
     });
     asyncLambdaFunction.addEventSource(eventSource);
 
-    const ec2 = this.createDiscordEC2(this, props.discordBotToken);
+    const ec2 = this.createDiscordEC2(this);
 
     const guildUserTable = new dynamodb.Table(this, 'GuildUser', {
       partitionKey: { name: 'guildId', type: dynamodb.AttributeType.STRING },
@@ -129,7 +131,7 @@ export class DiscordCommandStack extends Stack {
 
   }
 
-  createDiscordEC2(scope: Construct, discordBotToken: string) : ec2.Instance {
+  createDiscordEC2(scope: Construct) : ec2.Instance {
     const vpc = new ec2.Vpc(scope, 'DiscordVPC', {
       maxAzs: 2,
     });
@@ -161,9 +163,11 @@ export class DiscordCommandStack extends Stack {
       `#!/bin/bash`,
       `sudo yum update -y`,
       `sudo yum install -y git nodejs npm`,
+      `export DISCORD_BOT_TOKEN=${process.env.DISCORD_BOT_TOKEN}`,
+      `export AWS_REGION=us-east-1`,
       `git clone https://github.com/Jaysanf/whos-there-discord-bot.git /home/ec2-user/whos-there-discord-bot`,
       'cd /home/ec2-user/whos-there-discord-bot',
-      `DISCORD_BOT_TOKEN=${discordBotToken}`,
+      'echo "DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}" | sudo tee .env > /dev/null',
       `sudo npm install`,
       `sudo npm run deploy:discordLoop`
     );
