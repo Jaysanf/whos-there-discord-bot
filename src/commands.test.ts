@@ -1,9 +1,9 @@
 import { DiscordInteractionApplicationCommand } from "serverless-discord/discord/interactions";
-import { HelloWorldCommand } from "./commands";
+import { Subscribe } from "./commands";
 
-describe("HelloWorldCommand", () => {
+describe("SubscribeCommand", () => {
   it("should return a response", async () => {
-    const command = new HelloWorldCommand();
+    const command = new Subscribe();
     const res = await command.handleInteraction(new DiscordInteractionApplicationCommand({
       id: "123",
       application_id: "123",

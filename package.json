@@ -22,7 +22,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "cdk": "cdk",
-    "deploy:discord": "ts-node scripts/createCommands.ts"
+    "deploy:discord": "ts-node scripts/createCommands.ts",
+    "deploy:discordLoop": "ts-node scripts/discordloop.ts"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.112",
@@ -35,10 +36,13 @@
     "jest-mock-extended": "^3.0.3",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
+    "discord.js": "^14.0.0",
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.299.0",
     "@aws-sdk/client-ssm": "^3.299.0",
+    "@aws-sdk/lib-dynamodb": "^3.299.0",
     "aws-cdk-lib": "^2.69.0",
     "aws-lambda": "^1.0.7",
     "constructs": "^10.0.0",

@@ -1,6 +1,6 @@
 import { APIGatewayEvent, APIGatewayProxyResult, SQSEvent } from "aws-lambda";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { HelloWorldCommand, HelloWorldCommandAsync } from "./commands";
+import {Unsubscribe, Subscribe, UnsubscribeAll} from "./commands";
 import { initAsyncLambdaRouter, initLambdaRouter } from "serverless-discord/lambda/router";
 
 // Get the SSM Paths for secrets
@@ -19,8 +19,9 @@ let applicationId: string;
 let botToken: string;
 
 export const commands = [
-  new HelloWorldCommand(), 
-  new HelloWorldCommandAsync()
+  new Subscribe(),
+  new Unsubscribe(),
+  new UnsubscribeAll(),
 ];
 
 const getSecret = async ({ ssmClient, name } : { ssmClient: SSMClient; name?: string }): Promise<string> => {
